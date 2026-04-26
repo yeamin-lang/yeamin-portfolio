@@ -1,16 +1,674 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="dark">
 <head>
-  <title>My Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yeamin — Data Entry Specialist, Dashboard Designer & Freelance Analyst from Bangladesh. Turning raw data into clean, actionable insights.">
+  <title>Yeamin | Data & Dashboard Specialist</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>Hello, I'm [Your Name]</h1>
-  <p>Welcome to my portfolio!</p>
 
-  <h2>Projects</h2>
-  <ul>
-    <li>Project 1</li>
-    <li>Project 2</li>
-  </ul>
+  <!-- Loader -->
+  <div class="loader-wrap" id="loader">
+    <div class="loader-box">
+      <div class="loader-ring"></div>
+      <div class="loader-label">yeamin<span>.</span></div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Noise Texture -->
+  <div class="noise"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-file-lines"></i>
+    <span>CV coming soon — stay tuned! 📋</span>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-wrap">
+      <a href="#home" class="nav-brand">
+        <span class="brand-lt">&lt;</span>yeamin<span class="brand-dot">/</span><span class="brand-lt">&gt;</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nl active">home</a></li>
+        <li><a href="#about" class="nl">about</a></li>
+        <li><a href="#services" class="nl">services</a></li>
+        <li><a href="#portfolio" class="nl">work</a></li>
+        <li><a href="#journey" class="nl">journey</a></li>
+        <li><a href="#contact" class="nl">contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+        <button class="burger" id="burger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer" id="drawer">
+    <ul class="drawer-list">
+      <li><a href="#home" class="dl">01 — home</a></li>
+      <li><a href="#about" class="dl">02 — about</a></li>
+      <li><a href="#services" class="dl">03 — services</a></li>
+      <li><a href="#portfolio" class="dl">04 — work</a></li>
+      <li><a href="#journey" class="dl">05 — journey</a></li>
+      <li><a href="#contact" class="dl">06 — contact</a></li>
+    </ul>
+    <div class="drawer-socials">
+      <a href="https://github.com/yeamin-lang" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+      <a href="https://www.instagram.com/riko._.su/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+      <a href="mailto:samadyeamin@gmail.com"><i class="fas fa-envelope"></i></a>
+    </div>
+  </div>
+  <div class="drawer-bg" id="drawerBg"></div>
+
+  <!-- ===== MUSIC PLAYER ===== -->
+  <!-- NOTE: Add your calm MP3 files as track1.mp3, track2.mp3, track3.mp3 in the same folder -->
+  <div class="music-pill" id="musicPill">
+    <div class="pill-thumb">
+      <div class="pill-thumb-inner" id="pillThumb">
+        <i class="fas fa-music"></i>
+      </div>
+    </div>
+    <div class="pill-info">
+      <span id="pillTitle">Deep Focus</span>
+      <span id="pillArtist">Calm Studio</span>
+    </div>
+    <div class="pill-ctrl">
+      <button id="pillPrev"><i class="fas fa-backward-step"></i></button>
+      <button id="pillPlay" class="pill-play"><i class="fas fa-play"></i></button>
+      <button id="pillNext"><i class="fas fa-forward-step"></i></button>
+    </div>
+    <button id="pillExpand"><i class="fas fa-chevron-up"></i></button>
+  </div>
+
+  <div class="music-panel" id="musicPanel">
+    <div class="panel-top">
+      <span class="panel-tag">// now playing</span>
+      <button id="panelClose"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="panel-thumb" id="panelThumb"><i class="fas fa-music"></i></div>
+    <div class="panel-info">
+      <h3 id="panelTitle">Deep Focus</h3>
+      <p id="panelArtist">Calm Studio</p>
+    </div>
+    <div class="panel-prog" id="panelProg">
+      <div class="panel-prog-fill" id="panelFill"></div>
+    </div>
+    <div class="panel-times">
+      <span id="panelCurrent">0:00</span>
+      <span id="panelTotal">0:00</span>
+    </div>
+    <div class="panel-btns">
+      <button id="panelPrev"><i class="fas fa-backward-step"></i></button>
+      <button id="panelPlay" class="panel-play-btn"><i class="fas fa-play"></i></button>
+      <button id="panelNext"><i class="fas fa-forward-step"></i></button>
+    </div>
+    <div class="panel-vol">
+      <i class="fas fa-volume-low"></i>
+      <input type="range" id="volSlider" min="0" max="100" value="35">
+      <i class="fas fa-volume-high"></i>
+    </div>
+    <ul class="panel-list">
+      <li class="pl-item active" data-idx="0">
+        <div><span class="pl-title">Deep Focus</span><span class="pl-art">Calm Studio</span></div>
+        <span class="pl-dur">—:—</span>
+      </li>
+      <li class="pl-item" data-idx="1">
+        <div><span class="pl-title">Study Flow</span><span class="pl-art">Lo-Fi Mode</span></div>
+        <span class="pl-dur">—:—</span>
+      </li>
+      <li class="pl-item" data-idx="2">
+        <div><span class="pl-title">Midnight Calm</span><span class="pl-art">Ambient Air</span></div>
+        <span class="pl-dur">—:—</span>
+      </li>
+    </ul>
+  </div>
+
+  <button class="music-fab" id="musicFab" aria-label="Music player">
+    <i class="fas fa-headphones"></i>
+  </button>
+
+  <!-- Social Modal -->
+  <div class="social-overlay" id="socialOverlay"></div>
+  <div class="social-modal" id="socialModal">
+    <button class="s-close" id="socialClose"><i class="fas fa-xmark"></i></button>
+    <h2>connect<span>.</span></h2>
+    <ul class="s-links">
+      <li><a href="https://github.com/yeamin-lang" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a></li>
+      <li><a href="https://www.instagram.com/riko._.su/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i>Instagram</a></li>
+      <li><a href="mailto:samadyeamin@gmail.com"><i class="fas fa-envelope"></i>Email</a></li>
+    </ul>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose"><i class="fas fa-xmark"></i></button>
+    <button class="lb-prev" id="lbPrev"><i class="fas fa-chevron-left"></i></button>
+    <button class="lb-next" id="lbNext"><i class="fas fa-chevron-right"></i></button>
+    <div class="lb-inner">
+      <img src="" alt="" id="lbImg">
+      <div class="lb-caption">
+        <h3 id="lbTitle"></h3>
+        <p id="lbDesc"></p>
+      </div>
+    </div>
+    <div class="lb-dots" id="lbDots"></div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-grid-bg"></div>
+      <div class="glow g1"></div>
+      <div class="glow g2"></div>
+
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <span class="badge-pulse"></span>
+            <span>available for freelance</span>
+          </div>
+
+          <h1 class="hero-name">
+            <span class="hn-line">Yeamin</span>
+            <span class="hn-line hn-grad">.</span>
+          </h1>
+
+          <p class="hero-role">
+            <span class="rp">// </span>
+            <span id="typedText"></span>
+            <span class="type-cur">|</span>
+          </p>
+
+          <p class="hero-desc">
+            Precision-driven data specialist turning messy, raw information into clean, structured assets — fast, accurate, and always client-focused. Based in Bangladesh, working globally.
+          </p>
+
+          <div class="hero-btns">
+            <button class="btn-primary" id="aboutBtn">
+              <i class="fas fa-user"></i> About Me
+            </button>
+            <button class="btn-secondary" id="cvBtn">
+              <i class="fas fa-file-lines"></i> My CV
+            </button>
+            <button class="btn-ghost" id="socialBtn">
+              <i class="fas fa-share-nodes"></i> Links
+            </button>
+          </div>
+
+          <div class="hero-tools">
+            <span class="tools-label">stack:</span>
+            <span class="tool-tag">Excel</span>
+            <span class="tool-tag">Google Sheets</span>
+            <span class="tool-tag">CRM</span>
+            <span class="tool-tag">Notion</span>
+            <span class="tool-tag">AI Tools</span>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-photo-wrap">
+            <div class="photo-glow"></div>
+            <div class="photo-frame">
+              <!-- Replace pic.png with your actual photo -->
+              <img src="pic.png" alt="Yeamin" class="hero-photo"
+                onerror="this.src='https://ui-avatars.com/api/?name=Yeamin&size=500&background=1e0a40&color=9d5ff5&bold=true&font-size=0.35'">
+            </div>
+            <div class="float-badge fb1"><i class="fas fa-table-cells"></i> Excel</div>
+            <div class="float-badge fb2"><i class="fas fa-chart-pie"></i> Sheets</div>
+            <div class="float-badge fb3"><i class="fas fa-database"></i> CRM</div>
+            <div class="corner-tag ct1">{ data }</div>
+            <div class="corner-tag ct2">99%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Row -->
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-val"><span class="count" data-target="70">0</span>+</span>
+          <span class="stat-lbl">WPM Speed</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-val"><span class="count" data-target="99">0</span>%</span>
+          <span class="stat-lbl">Accuracy Rate</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-val"><span class="count" data-target="5">0</span>+</span>
+          <span class="stat-lbl">Projects Done</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-val avail"><i class="fas fa-circle-check"></i></span>
+          <span class="stat-lbl">Always Available</span>
+        </div>
+      </div>
+
+      <div class="scroll-hint">
+        <span>scroll</span>
+        <div class="scroll-bar"></div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <span>Excel</span><span class="mdot">◆</span>
+        <span>Google Sheets</span><span class="mdot">◆</span>
+        <span>CRM Systems</span><span class="mdot">◆</span>
+        <span>Data Cleaning</span><span class="mdot">◆</span>
+        <span>Lead Generation</span><span class="mdot">◆</span>
+        <span>Dashboard Design</span><span class="mdot">◆</span>
+        <span>Web Research</span><span class="mdot">◆</span>
+        <span>Notion</span><span class="mdot">◆</span>
+        <span>AI Tools</span><span class="mdot">◆</span>
+        <span>Airtable</span><span class="mdot">◆</span>
+        <span>Excel</span><span class="mdot">◆</span>
+        <span>Google Sheets</span><span class="mdot">◆</span>
+        <span>CRM Systems</span><span class="mdot">◆</span>
+        <span>Data Cleaning</span><span class="mdot">◆</span>
+        <span>Lead Generation</span><span class="mdot">◆</span>
+        <span>Dashboard Design</span><span class="mdot">◆</span>
+        <span>Web Research</span><span class="mdot">◆</span>
+        <span>Notion</span><span class="mdot">◆</span>
+        <span>AI Tools</span><span class="mdot">◆</span>
+        <span>Airtable</span><span class="mdot">◆</span>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about" class="section about-sec">
+      <div class="sec-tag">02 / about</div>
+      <div class="sec-header">
+        <h2 class="sec-title">About <span class="ac">Me</span></h2>
+        <p class="sec-sub">Precision. Speed. Results — built for clients who expect more.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I'm <strong>Yeamin</strong> — a precision-driven data specialist who transforms raw, unstructured information into clean, decision-ready assets. While most people see spreadsheets, I see stories — patterns that reveal growth, bottlenecks, and opportunity waiting to be unlocked.</p>
+          <p>Still a student, but operating with a <strong>professional mindset from day one</strong>. Since 2025, I've immersed myself in data entry, Google Sheets, dashboards, and analytics — building real, applicable skills that real clients can depend on.</p>
+          <p>With <strong>70+ WPM and 99%+ accuracy</strong>, I don't just work fast — I work right. My secret weapon? Combining meticulous human precision with modern AI tools to deliver projects that aren't just accurate — they're impressive. Clean data. Beautiful dashboards. Verified leads. Always on time.</p>
+          <p><strong>🎯 My promise:</strong> I treat every project as if it's the only one that matters — because to my client, it is.</p>
+        </div>
+
+        <div class="about-cards">
+          <div class="acard" data-delay="0">
+            <div class="acard-ico"><i class="fas fa-bullseye"></i></div>
+            <h4>Accuracy</h4>
+            <p>99%+ accuracy rate.<br><strong>Zero-error policy.</strong></p>
+          </div>
+          <div class="acard" data-delay="100">
+            <div class="acard-ico"><i class="fas fa-screwdriver-wrench"></i></div>
+            <h4>Tools</h4>
+            <ul>
+              <li>Excel / Google Sheets</li>
+              <li>Notion / Airtable</li>
+              <li>CRM Platforms</li>
+              <li>AI Assistants</li>
+            </ul>
+          </div>
+          <div class="acard" data-delay="200">
+            <div class="acard-ico"><i class="fas fa-brain"></i></div>
+            <h4>Soft Skills</h4>
+            <ul>
+              <li>Attention to Detail</li>
+              <li>Fast Learner</li>
+              <li>Reliable & Punctual</li>
+              <li>Client-Focused</li>
+            </ul>
+          </div>
+          <div class="acard" data-delay="300">
+            <div class="acard-ico"><i class="fas fa-rocket"></i></div>
+            <h4>Goals</h4>
+            <ul>
+              <li>Global Freelance Clients</li>
+              <li>Data Analytics Growth</li>
+              <li>SaaS Dashboard Projects</li>
+              <li>Top Freelancer Rating</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-block">
+        <h3 class="skills-heading">// technical proficiency</h3>
+        <div class="skills-grid">
+          <div class="skill-row">
+            <div class="skill-meta"><span>Advanced Data Entry</span><span class="sk-pct">99%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="99"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-meta"><span>Data Cleaning & Formatting</span><span class="sk-pct">92%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="92"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-meta"><span>Google Sheets / Excel</span><span class="sk-pct">88%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-meta"><span>Dashboard Design</span><span class="sk-pct">85%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-meta"><span>Lead Generation</span><span class="sk-pct">82%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="82"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-meta"><span>Web Research</span><span class="sk-pct">86%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="86"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="section services-sec">
+      <div class="sec-tag">03 / services</div>
+      <div class="sec-header">
+        <h2 class="sec-title">What I <span class="ac">Do</span></h2>
+        <p class="sec-sub">Specialized data services built for businesses that want results, not excuses.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="scard" data-delay="0">
+          <span class="scard-num">01</span>
+          <div class="scard-ico"><i class="fas fa-keyboard"></i></div>
+          <h3>Precision Data Entry</h3>
+          <p>Fast, accurate data entry across Excel, Google Sheets, CRMs, and web forms. 70+ WPM typing speed with a strict zero-error policy — because bad data costs more than good work.</p>
+          <div class="scard-tags"><span>Excel</span><span>Sheets</span><span>CRM</span></div>
+        </div>
+        <div class="scard" data-delay="80">
+          <span class="scard-num">02</span>
+          <div class="scard-ico"><i class="fas fa-gauge-high"></i></div>
+          <h3>Dashboard Design</h3>
+          <p>Transform raw numbers into interactive dashboards your team actually wants to use — KPI cards, trend charts, pivot tables, conditional formatting. Google Sheets & Excel.</p>
+          <div class="scard-tags"><span>Dashboard</span><span>Charts</span><span>KPI</span></div>
+        </div>
+        <div class="scard" data-delay="160">
+          <span class="scard-num">03</span>
+          <div class="scard-ico"><i class="fas fa-chart-line"></i></div>
+          <h3>Business Tracking Systems</h3>
+          <p>Custom-built trackers for monthly revenue, website traffic, team performance, and quarterly milestones. Real-time visibility so you always know where your business stands.</p>
+          <div class="scard-tags"><span>Revenue</span><span>KPI</span><span>Analytics</span></div>
+        </div>
+        <div class="scard" data-delay="240">
+          <span class="scard-num">04</span>
+          <div class="scard-ico"><i class="fas fa-broom"></i></div>
+          <h3>Data Cleaning & Formatting</h3>
+          <p>Remove duplicates, fix errors, standardize messy datasets. Turn the chaos of thousands of records into a clean, consistent database your team can actually rely on.</p>
+          <div class="scard-tags"><span>Cleaning</span><span>Format</span><span>Accuracy</span></div>
+        </div>
+        <div class="scard" data-delay="320">
+          <span class="scard-num">05</span>
+          <div class="scard-ico"><i class="fas fa-user-magnify"></i></div>
+          <h3>Lead Generation</h3>
+          <p>Find, verify, and organize qualified B2B leads from LinkedIn, web directories, and company research. Structured CSV/Excel output with emails, names, and company details — CRM-ready.</p>
+          <div class="scard-tags"><span>LinkedIn</span><span>B2B</span><span>Verified</span></div>
+        </div>
+        <div class="scard" data-delay="400">
+          <span class="scard-num">06</span>
+          <div class="scard-ico"><i class="fas fa-magnifying-glass"></i></div>
+          <h3>Web Research & Extraction</h3>
+          <p>Fast, accurate data extraction from websites, PDFs, and documents. High-volume research tasks completed with precision — every row verified, every deadline met.</p>
+          <div class="scard-tags"><span>Research</span><span>PDF</span><span>Speed</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="section portfolio-sec">
+      <div class="sec-tag">04 / work</div>
+      <div class="sec-header">
+        <h2 class="sec-title">My <span class="ac">Work</span></h2>
+        <p class="sec-sub">Real projects. Real results. Click to view screenshots.</p>
+      </div>
+
+      <div class="portfolio-grid">
+        <div class="pcard" data-delay="0">
+          <div class="pcard-img">
+            <!-- Replace with your project screenshot: project1.png -->
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Revenue Tracker">
+            <div class="pcard-over">
+              <button class="pcard-gallery view-gallery" data-proj="0"><i class="fas fa-images"></i></button>
+              <a href="#contact" class="pcard-gallery"><i class="fas fa-paper-plane"></i></a>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <span class="pcard-cat">Excel Dashboard</span>
+            <h3>Revenue Tracker — Excel</h3>
+            <p>Monthly revenue tracker with KPI cards, trend charts, and regional breakdown — built entirely in Excel</p>
+            <div class="pcard-tags"><span>Excel</span><span>KPI</span><span>Charts</span></div>
+          </div>
+        </div>
+
+        <div class="pcard" data-delay="100">
+          <div class="pcard-img">
+            <!-- Replace with your project screenshot: project2.png -->
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Lead Generation">
+            <div class="pcard-over">
+              <button class="pcard-gallery view-gallery" data-proj="1"><i class="fas fa-images"></i></button>
+              <a href="#contact" class="pcard-gallery"><i class="fas fa-paper-plane"></i></a>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <span class="pcard-cat">Lead Generation</span>
+            <h3>Lead Gen — 200+ Verified Leads</h3>
+            <p>B2B lead list with emails, LinkedIn URLs, and company data — verified and structured for CRM import</p>
+            <div class="pcard-tags"><span>LinkedIn</span><span>B2B</span><span>Verified</span></div>
+          </div>
+        </div>
+
+        <div class="pcard" data-delay="200">
+          <div class="pcard-img">
+            <!-- Replace with your project screenshot: project3.png -->
+            <img src="https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?w=600&q=80" alt="Data Cleaning">
+            <div class="pcard-over">
+              <button class="pcard-gallery view-gallery" data-proj="2"><i class="fas fa-images"></i></button>
+              <a href="#contact" class="pcard-gallery"><i class="fas fa-paper-plane"></i></a>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <span class="pcard-cat">Data Cleaning</span>
+            <h3>Data Cleaning — 5K Records</h3>
+            <p>5,000+ customer records cleaned, deduplicated, and standardized — ready for immediate analysis</p>
+            <div class="pcard-tags"><span>Cleaning</span><span>Excel</span><span>5K+ Records</span></div>
+          </div>
+        </div>
+
+        <div class="pcard" data-delay="300">
+          <div class="pcard-img">
+            <!-- Replace with your project screenshot: project4.png -->
+            <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&q=80" alt="Habit Tracker">
+            <div class="pcard-over">
+              <button class="pcard-gallery view-gallery" data-proj="3"><i class="fas fa-images"></i></button>
+              <a href="#contact" class="pcard-gallery"><i class="fas fa-paper-plane"></i></a>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <span class="pcard-cat">Tracker System</span>
+            <h3>Habit Tracker — Google Sheets</h3>
+            <p>Daily and weekly habit tracker with streaks, progress bars, and monthly review views in Google Sheets</p>
+            <div class="pcard-tags"><span>Google Sheets</span><span>Habit</span><span>Tracker</span></div>
+          </div>
+        </div>
+
+        <div class="pcard" data-delay="400">
+          <div class="pcard-img">
+            <!-- Replace with your project screenshot: project5.png -->
+            <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80" alt="Business Dashboard">
+            <div class="pcard-over">
+              <button class="pcard-gallery view-gallery" data-proj="4"><i class="fas fa-images"></i></button>
+              <a href="#contact" class="pcard-gallery"><i class="fas fa-paper-plane"></i></a>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <span class="pcard-cat">Business Dashboard</span>
+            <h3>Business Progress Dashboard</h3>
+            <p>Quarterly tracker — revenue, expenses, team targets, and milestone completion for a growing startup</p>
+            <div class="pcard-tags"><span>Sheets</span><span>Progress</span><span>Startup</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOURNEY -->
+    <section id="journey" class="section journey-sec">
+      <div class="sec-tag">05 / journey</div>
+      <div class="sec-header">
+        <h2 class="sec-title">My <span class="ac">Journey</span></h2>
+        <p class="sec-sub">From curious student to results-driven data specialist.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item" data-delay="0">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="tl-year">2025 — The Beginning</span>
+            <h3>The Spark</h3>
+            <p>As a student with a drive to earn and grow from a young age, I discovered data entry and Google Sheets — and immediately knew this was a skill worth mastering. Started from scratch, built every day.</p>
+          </div>
+        </div>
+        <div class="tl-item" data-delay="120">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="tl-year">Skill Building</span>
+            <h3>Core Mastery</h3>
+            <p>Developed real proficiency in Excel, Google Sheets, data cleaning, dashboard design, and lead generation. Not just theory — hands-on, practical skills built through actual projects and consistent practice.</p>
+          </div>
+        </div>
+        <div class="tl-item" data-delay="240">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="tl-year">AI Integration</span>
+            <h3>Leveled Up</h3>
+            <p>Embraced the rise of AI tools and learned how to leverage them to create more accurate, client-friendly, and visually attractive deliverables — maintaining 99% accuracy while producing better output than ever.</p>
+          </div>
+        </div>
+        <div class="tl-item" data-delay="360">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <span class="tl-year">Going Global</span>
+            <h3>Building a Name</h3>
+            <p>Working toward becoming a trusted global freelancer known for excellent behavior and impeccable work. The goal: clients who come back not because they have to — but because they want to.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact-sec">
+      <div class="sec-tag">06 / contact</div>
+      <div class="sec-header">
+        <h2 class="sec-title">Let's <span class="ac">Work</span></h2>
+        <p class="sec-sub">Need clean data, dashboards, or verified leads? Let's talk. 👋</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="ci-item">
+            <i class="fas fa-envelope"></i>
+            <span>samadyeamin@gmail.com</span>
+          </div>
+          <div class="ci-item">
+            <i class="fas fa-location-dot"></i>
+            <span>Bangladesh</span>
+          </div>
+          <div class="ci-item">
+            <i class="fas fa-circle-check"></i>
+            <span>Available — Most of the time</span>
+          </div>
+          <div class="ci-item">
+            <i class="fas fa-reply"></i>
+            <span>Response within 24 hours</span>
+          </div>
+          <div class="ci-socials">
+            <a href="https://github.com/yeamin-lang" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.instagram.com/riko._.su/" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:samadyeamin@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+
+        <form class="contact-form" action="https://formsubmit.co/samadyeamin@gmail.com" method="POST">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_subject" value="New portfolio enquiry from yeamin.github.io">
+          <div class="fg">
+            <label>your name</label>
+            <input type="text" name="name" placeholder="John Doe" required>
+          </div>
+          <div class="fg">
+            <label>your email</label>
+            <input type="email" name="email" placeholder="john@company.com" required>
+          </div>
+          <div class="fg">
+            <label>service needed</label>
+            <select name="service">
+              <option value="">Select a service...</option>
+              <option>Precision Data Entry</option>
+              <option>Dashboard Design</option>
+              <option>Business Tracking System</option>
+              <option>Data Cleaning & Formatting</option>
+              <option>Lead Generation</option>
+              <option>Web Research & Extraction</option>
+              <option>Other / Custom Project</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>your message</label>
+            <textarea name="message" placeholder="Hey Yeamin, I need help with..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary full">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-lt">&lt;</span>yeamin<span class="brand-dot">/</span><span class="brand-lt">&gt;</span>
+      </div>
+      <p class="footer-copy">© 2025 Yeamin — Data & Dashboard Specialist · Built with 💜 & precision</p>
+      <div class="footer-links">
+        <a href="https://github.com/yeamin-lang" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+        <a href="https://www.instagram.com/riko._.su/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:samadyeamin@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mob-nav">
+    <a href="#home" class="mn active"><i class="fas fa-house"></i><span>Home</span></a>
+    <a href="#about" class="mn"><i class="fas fa-user"></i><span>About</span></a>
+    <a href="#services" class="mn"><i class="fas fa-list-check"></i><span>Services</span></a>
+    <a href="#portfolio" class="mn"><i class="fas fa-briefcase"></i><span>Work</span></a>
+    <a href="#contact" class="mn"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  </nav>
+
 </body>
 </html>
